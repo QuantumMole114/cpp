@@ -6,7 +6,8 @@ int main()
     int score = 0;
     cout << "输入你的高考成绩：" << endl;
     cin >> score;
-/*
+    /*
+
     if (score >= 600)
     {
         cout << "text" << endl;
@@ -40,7 +41,8 @@ int main()
     {
         cout << "废物" << endl;
     }
-*/
+    
+    */
 
     //嵌套if语句
     if (score > 600)
