@@ -8,5 +8,5 @@ int main()
     cout << "兴趣爱好:摄影" << endl;
     cout << "我的目标:开发能简化和方便自己日常生活中部分事务的程序" << endl;
     
-    return 0;
+    cin.get();
 }
