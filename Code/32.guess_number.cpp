@@ -16,7 +16,7 @@ int main()
 
     //用户输入数据
     int val = 0;
-    cout << "请猜数字：" << endl;
+    cout << "guess a number:" << endl;
 
     while (1)
     {
@@ -24,20 +24,20 @@ int main()
 
         if (val > num)
         {
-            cout << "猜大了" << endl;
+            cout << "too big" << endl;
         }
         else if (val < num)
         {
-            cout << "猜小了" << endl;
+            cout << "too small" << endl;
         }
         else
         {
-            cout << "猜对了" << endl;
+            cout << "good" << endl;
             //猜对后退出
             break;
         }
     }
     
-
+    
     return 0;
 }
