@@ -7,10 +7,10 @@ int main()
 
     //开始冒泡排序
     //总排序轮数 == 元素个数 - 1
-    for (int i = 0; i < (10-1); i++)
+    for (int i = 0; i < (sizeof(arr) / sizeof(arr[0])-1); i++)
     {
         //内层排序轮数 == 元素个数 - 当前轮数 - 1
-        for (int j = 0; j < (10 - i - 1); j++)
+        for (int j = 0; j < (sizeof(arr) / sizeof(arr[0]) - i - 1); j++)
         {
             //如果第一个数字比第二个数字大则交换这两个数字
             if (arr[j] > arr[j + 1])
@@ -27,9 +27,9 @@ int main()
 
     for (int k = 0; k < (sizeof(arr) / sizeof(arr[0])); k++)
     {
-        cout << arr[k] << endl;
+        cout << arr[k] << " ";
     }
-    
+    cout << endl;
     
     
     return 0;
