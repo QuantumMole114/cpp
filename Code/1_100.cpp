@@ -11,6 +11,5 @@ int main()
     }
     cout << num << endl;
     
-    system("pause");
     return 0;
 }
