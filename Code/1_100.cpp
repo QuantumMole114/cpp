@@ -10,6 +10,6 @@ int main()
         i++;
     }
     cout << num << endl;
-    
+
     return 0;
 }

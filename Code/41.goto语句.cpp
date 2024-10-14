@@ -10,11 +10,10 @@ int main()
     cout << "3" << endl;
     cout << "4" << endl;
 
-    FLAG:
+FLAG:
 
     cout << "5" << endl;
     cout << "6" << endl;
 
-    
     return 0;
 }

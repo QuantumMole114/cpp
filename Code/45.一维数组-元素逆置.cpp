@@ -2,8 +2,8 @@
 using namespace std;
 int main()
 {
-    //声明一个5个元素的数组，并且将元素逆置
-    int arr[5] = {1,2,3,4,5};
+    // 声明一个5个元素的数组，并且将元素逆置
+    int arr[5] = {1, 2, 3, 4, 5};
     int start = 0;
     int end = sizeof(arr) / sizeof(arr[0]) - 1;
 
@@ -20,9 +20,6 @@ int main()
     {
         cout << arr[i] << " ";
     }
-    
-    
 
-    
     return 0;
 }

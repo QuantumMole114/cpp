@@ -6,7 +6,7 @@ int main()
 
     do
     {
-        num ++;
+        num++;
 
         int a = num / 10;
         int b = num % 10;
@@ -15,15 +15,13 @@ int main()
         {
             cout << "敲桌子" << endl;
         }
-        
+
         else
         {
             cout << num << endl;
         }
-        
-        
+
     } while (num < 100);
-    
-    
+
     return 0;
 }

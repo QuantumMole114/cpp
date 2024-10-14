@@ -2,7 +2,7 @@
 using namespace std;
 int main()
 {
-    //单行if语句
+    // 单行if语句
     int score = 0;
     cout << "输入你的高考成绩：" << endl;
     cin >> score;
@@ -12,7 +12,7 @@ int main()
     {
         cout << "text" << endl;
     }
-    
+
     //多行if语句
     if (score >= 600)
     {
@@ -41,10 +41,10 @@ int main()
     {
         cout << "废物" << endl;
     }
-    
+
     */
 
-    //嵌套if语句
+    // 嵌套if语句
     if (score > 600)
     {
         if (score >= 700)
@@ -59,15 +59,12 @@ int main()
         else
         {
             cout << "恭喜你考上南京工业大学！" << endl;
-
         }
-        
     }
     else
     {
         cout << "你只能上带专了" << endl;
     }
-
 
     return 0;
 }

@@ -2,9 +2,9 @@
 using namespace std;
 int main()
 {
-    //出现在Switch条件语句中，作用是终止case并跳出switch
+    // 出现在Switch条件语句中，作用是终止case并跳出switch
 
-    /*  
+    /*
 
     int val = 0;
 
@@ -25,17 +25,16 @@ int main()
         break;
     case 3:
         cout << "您选择的是困难难度。" << endl;
-        break;        
+        break;
     default:
         break;
-    } 
-    
+    }
+
     */
 
-    
-    //出现在循环语句中，作用是跳出当前的循环语句
+    // 出现在循环语句中，作用是跳出当前的循环语句
 
-    /*  
+    /*
 
     for (int i = 0; i < 10; i++)
     {
@@ -49,7 +48,7 @@ int main()
 
     */
 
-    //出现在嵌套循环中，跳出最近的内层循环语句
+    // 出现在嵌套循环中，跳出最近的内层循环语句
 
     for (int i = 0; i < 10; i++)
     {
@@ -59,15 +58,11 @@ int main()
             {
                 break;
             }
-            
+
             cout << "* ";
         }
         cout << endl;
-        
     }
-    
-    
-
 
     return 0;
 }
