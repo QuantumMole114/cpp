@@ -21,6 +21,6 @@ int main()
     const int *const p3 = &b;
     //*p3 = 100; 错误
     // p3 = &b; 错误
-    
+
     return 0;
 }
