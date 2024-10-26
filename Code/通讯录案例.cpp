@@ -2,7 +2,7 @@
 #include <string>
 using namespace std;
 
-#define MAX 1000 // 最大人数
+#define MAX 100 // 最大人数
 
 struct Person
 {
@@ -11,6 +11,13 @@ struct Person
     int m_Age;
     string m_Phone;
     string m_Addr;
+};
+
+// 通讯录结构体
+struct Addressbook
+{
+    Person personArray[MAX]; // 通讯录中保存联系人的数组
+    int m_Size;              // 通讯录人员个数
 };
 
 void showMenu()
@@ -25,13 +32,6 @@ void showMenu()
     cout << "***** 0、退出通讯录 *****" << endl;
     cout << "*************************" << endl;
 }
-
-// 通讯录结构体
-struct Addressbook
-{
-    Person personArray[MAX]; // 通讯录中保存联系人的数组
-    int m_Size;              // 通讯录人员个数
-};
 
 void addPerson(Addressbook *abs) // 添加联系人函数
 {
@@ -196,7 +196,7 @@ void findPerson(Addressbook *abs)
 void modifyPerson(Addressbook *abs)
 {
     string name;
-    cout << "请输入要查找的联系人：" << endl;
+    cout << "请输入要修改的联系人：" << endl;
     cin >> name;
 
     int ret = isExist(abs, name);
@@ -293,6 +293,36 @@ void modifyPerson(Addressbook *abs)
     system("clear");
 }
 
+void cleanPerson(Addressbook *abs)
+{
+    char select;
+    cout << "是否确认清空通讯录 y or n" << endl;
+    cin >> select;
+
+    while (true)
+    {
+        if (select == 'y')
+        {
+            abs->m_Size = 0;
+            cout << "通讯录已清空" << endl;
+            break;
+        }
+        else if (select == 'n')
+        {
+            break;
+        }
+        else
+        {
+            cout << "输入有误，请重新输入" << endl;
+        }
+    }
+
+    cout << "请按回车继续..." << endl;
+    cin.get();
+    cin.get(); // 确保捕获回车
+    system("clear");
+}
+
 int main()
 {
     Addressbook abs; // 创建通讯录数组
@@ -327,6 +357,7 @@ int main()
             break;
 
         case 6: // 6.清空联系人
+            cleanPerson(&abs);
             break;
         case 0: // 0.退出通讯录
             cout << "欢迎下次使用！" << endl;
