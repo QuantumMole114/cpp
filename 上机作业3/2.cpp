@@ -126,6 +126,8 @@ void case2()
     cout << month_count << "月份预扣预缴应纳税所得额为: " << arr[month_count - 1].total_tax << endl;
     cout << "您" << month_count << "月份缴纳个人所得税" << arr[month_count - 1].pre_tax << "元" << endl;
     cout << "税后收入是 " << month_income - arr[month_count - 1].pre_tax << "元" << endl;
+    cout << endl;
+    cout << "感谢依法纳税，谢谢使用！" << endl;
 }
 
 int main()
