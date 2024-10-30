@@ -81,7 +81,7 @@ void case2()
     cout << "......" << endl;
 
     int month_count = 0;
-    double total_money; // 到当前月份年度累计收入
+    double total_money; // 到当前月份年度累计应交税所得额
     for (int i = 1; i < work_month + 1; i++)
     {
         double rate = 0;
