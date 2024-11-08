@@ -3,11 +3,12 @@ using namespace std;
 
 // 引用做函数的返回值
 // 1.不要返回局部变量的引用
-int &test01()
-{
-    int a = 10;
-    return a; // 不要返回局部变量引用
-}
+
+// int &test01()
+// {
+//     int a = 10;
+//     return a; // 不要返回局部变量引用
+// }
 
 int &test02()
 {
@@ -18,7 +19,7 @@ int &test02()
 int main()
 {
 
-    int &ref = test01();
+    // int &ref = test01();
     // cout << "ref " << ref << endl;
     // cout << "ref " << ref << endl; 局部变量存放在栈区中已经被释放
 
