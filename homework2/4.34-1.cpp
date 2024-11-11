@@ -3,7 +3,7 @@ using namespace std;
 int main()
 {
     int n = 0;
-    cout << "请输入n: " << endl;
+    cout << "请输入n: ";
     cin >> n;
 
     int count = 1;
