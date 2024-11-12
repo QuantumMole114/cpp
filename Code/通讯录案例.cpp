@@ -65,6 +65,7 @@ void addPerson(Addressbook *abs) // 添加联系人函数
             else
             {
                 cout << "输入有误，请重新输入" << endl; // 输错之后重新输入
+                wating to be edited
             }
         }
 
