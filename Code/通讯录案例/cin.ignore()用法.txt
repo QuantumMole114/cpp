@@ -1,0 +1,90 @@
+通讯录案例.cpp  Line_69
+
+
+cin.ignore 是 C++ 中用于忽略输入流中指定数量的字符的一种方法，通常用于跳过无效数据，处理格式错误或意外的额外输入。让我们详细了解它的用法和参数。
+
+基本语法
+
+cin.ignore(streamsize n = 1, int delim = EOF);
+
+	•	n (可选)：忽略的字符数量，类型为 streamsize。默认值是 1，表示忽略一个字符。
+	•	delim (可选)：忽略字符的终止符，当遇到这个字符时停止忽略。默认值是 EOF（文件结束符），意味着会忽略 n 个字符或直到输入结束。
+
+cin.ignore 的几种常见用法
+
+	1.	忽略一个字符
+	•	默认情况下，cin.ignore() 会跳过一个字符。这种用法在只想跳过一个字符时有效，比如读取完一个整数后跳过空格或换行符。
+
+cin.ignore();  // 忽略1个字符
+
+
+	2.	忽略特定数量的字符
+	•	如果你想忽略多个字符，可以指定 n 参数。以下示例将跳过5个字符：
+
+cin.ignore(5);  // 忽略5个字符
+
+
+	3.	忽略直到特定的终止符
+	•	如果需要忽略直到遇到特定字符（例如换行符 '\n'），可以设置 delim 参数：
+
+cin.ignore(100, '\n');  // 忽略最多100个字符或直到遇到换行符
+
+	•	这种用法在清理输入流中多余的数据时很有用，特别是当用户输入了无效的数据，需要在下一次读取之前清空流。
+
+	4.	忽略一行
+	•	使用 numeric_limits<streamsize>::max() 与 '\n' 组合，可以忽略当前行的所有内容（通常用于跳过整行数据）：
+
+cin.ignore(numeric_limits<streamsize>::max(), '\n');  // 忽略整行
+
+	•	这是清理无效输入行的常见方法，用于确保缓冲区没有残留字符。
+
+示例
+
+示例1：忽略部分字符
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    char ch;
+    cout << "请输入字符序列（将跳过前3个字符）: ";
+    cin.ignore(3);  // 忽略前3个字符
+    cin >> ch;
+    cout << "第4个字符为: " << ch << endl;
+    return 0;
+}
+
+示例2：处理输入错误并重新输入
+
+#include <iostream>
+#include <limits>
+using namespace std;
+
+int main() {
+    int num;
+    while (true) {
+        cout << "请输入一个整数: ";
+        if (cin >> num) {
+            cout << "输入的整数是: " << num << endl;
+            break;
+        } else {
+            cout << "无效输入，请重新输入！" << endl;
+            cin.clear();  // 清除错误状态
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');  // 忽略当前行的所有输入
+        }
+    }
+    return 0;
+}
+
+在这个例子中，cin.ignore(numeric_limits<streamsize>::max(), '\n') 确保清除当前行中所有错误输入，以便下一次可以重新输入有效数据。
+
+使用场景总结
+
+	•	跳过换行符：例如在读取单个字符后要跳过换行符。
+	•	处理错误输入：例如当输入类型不符合预期时，忽略无效数据。
+	•	多次读取循环：如在循环中连续读取数据，确保每次都开始于新的输入。
+
+注意事项
+
+	•	避免误用：使用过大的 n 值可能会跳过更多字符。
+	•	配合cin.clear()使用：当输入流进入错误状态（例如读取失败），通常需要先使用 cin.clear()，再用 cin.ignore() 清除缓冲区内容。

@@ -64,8 +64,9 @@ void addPerson(Addressbook *abs) // 添加联系人函数
             }
             else
             {
-                cout << "输入有误，请重新输入" << endl; // 输错之后重新输入
-                wating to be edited
+                cout << "输入有误，请重新输入: " << endl;            // 输错之后重新输入
+                cin.clear();                                         // 清除错误状态
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // 这是清理无效输入行的常见方法，用于确保缓冲区没有残留字符
             }
         }
 
