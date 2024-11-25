@@ -31,8 +31,8 @@ int main()
 {
     sampleClass a1;
     a1.m_name = "张三";
-    //a1.m_car = 'car'; //成员 "sampleClass::m_car" (已声明 所在行数:16) 不可访问C/C++(265)
-    //a1.m_password = 1111; //成员 "sampleClass::m_password" (已声明 所在行数:19) 不可访问C/C++(265)
+    // a1.m_car = 'car'; //成员 "sampleClass::m_car" (已声明 所在行数:16) 不可访问C/C++(265)
+    // a1.m_password = 1111; //成员 "sampleClass::m_password" (已声明 所在行数:19) 不可访问C/C++(265)
     a1.func();
 
     return 0;

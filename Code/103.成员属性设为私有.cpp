@@ -51,7 +51,7 @@ int main()
     Person p1;
     // p1.m_Name = "张三"; //由于权限无法直接访问
 
-    //修改年龄(0~150)
+    // 修改年龄(0~150)
     p1.setAge(60);
 
     // 姓名可读可写
@@ -64,6 +64,5 @@ int main()
     // idol(只写)
     p1.setIdol("YOASOBI");
 
-    
     return 0;
 }
