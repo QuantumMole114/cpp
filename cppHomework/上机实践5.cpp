@@ -4,10 +4,10 @@
 
 using namespace std;
 
-pair<double,double> equalPrincipalPayment(double loanAmount, double repaymentYears, double monthlyRate)
+pair<double, double> equalPrincipalPayment(double loanAmount, double repaymentYears, double monthlyRate)
 {
     double monthlyPayment = 0, monthlyInterest = 0, monthlyPrincipal = 0, totalInterest = 0, repayCount = 0;
-	double previousMonthInterest = 0, interestDifference = 0;
+    double previousMonthInterest = 0, interestDifference = 0;
     int m = repaymentYears * 12;
     int repaymentMonth = 1;
 
@@ -22,18 +22,18 @@ pair<double,double> equalPrincipalPayment(double loanAmount, double repaymentYea
         cout << "第 " << repaymentMonth << " 月还款: " << monthlyPayment
              << " 本金: " << monthlyPrincipal
              << " 利息: " << monthlyInterest << endl;
-		if (repaymentMonth > 1)
-		{
-			interestDifference = previousMonthInterest - monthlyInterest;
-		}
+        if (repaymentMonth > 1)
+        {
+            interestDifference = previousMonthInterest - monthlyInterest;
+        }
 
         // 更新前一个月的利息
         previousMonthInterest = monthlyInterest;
-		
+
         repaymentMonth++;
     }
 
-    return make_pair(totalInterest,interestDifference); // 返回总利息
+    return make_pair(totalInterest, interestDifference); // 返回总利息
 }
 
 double equalTotalPayment(double loanAmount, double repaymentYears, double monthlyRate)
