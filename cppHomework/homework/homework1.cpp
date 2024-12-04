@@ -9,4 +9,5 @@ int main()
     cout << "我的目标:开发能简化和方便自己日常生活中部分事务的程序" << endl;
 
     cin.get();
+    return 0;
 }
