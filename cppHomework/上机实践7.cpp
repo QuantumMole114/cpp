@@ -108,7 +108,7 @@ void setInfo(techinf *t)
         cin >> t->dSalary[i];
     }
 
-    calculateTaxLastsalary(t);
+    calculateTaxLastsalary(t); // 计算个调税和实发工资
 }
 
 // 求最大最小和平均值
@@ -180,7 +180,10 @@ void showSalary(techBook *abs, int j)
 // 显示信息
 void showInfo(techBook *abs)
 {
-    cout << "岗位工资\t"
+    cout << "工号\t"
+         << "姓名\t"
+         << "职称\t"
+         << "岗位工资\t"
          << "薪级工资\t"
          << "岗位津贴\t"
          << "生活补贴\t"
@@ -261,23 +264,146 @@ void adjustSalary(techBook *abs)
     }
 }
 
+// 递归计算指定人第n年岗位工资函数
+double caculateNSalary(double salary, int n, string title)
+{
+    double rate;
+    if (n == 1)
+    {
+        return salary;
+    }
+    if (title == "教授")
+    {
+        rate = 1.1;
+    }
+    else if (title == "副教授")
+    {
+        rate = 1.08;
+    }
+    else if (title == "讲师")
+    {
+        rate = 1.05;
+    }
+    else if (title == "初级")
+    {
+        rate = 1.04;
+    }
+    else if (title == "其他")
+    {
+        rate = 1.03;
+    }
+    return caculateNSalary(salary, n - 1, title) * rate;
+}
+
+// 查询指定员工第n年岗位工资
+void searchSalary(techBook *abs)
+{
+    string idIn;
+    int yearIn;
+    double salaryTemp; // 存放从表中查询到的员工的岗位工资
+    string titleTemp;  // 存放查询到的职称
+    string nameTemp;   // 存放姓名
+    cout << "请输入工号: ";
+    cin >> idIn;
+    for (int i = 0; i < abs->m_Size; i++)
+    {
+        if (abs->personArray[i].num == idIn)
+        {
+            salaryTemp = abs->personArray[i].dSalary[0];
+            titleTemp = abs->personArray[i].title;
+            nameTemp = abs->personArray[i].name;
+        }
+    }
+    cout << "请输入要查询第几年的工资: ";
+    cin >> yearIn;
+
+    double finalSalary = caculateNSalary(salaryTemp, yearIn, titleTemp);
+    cout << nameTemp << "的第" << yearIn << "年岗位工资为" << finalSalary << endl;
+}
+
+// 计算两个日期之间相差的月份数
+int calculateMonthDifference(int startYear, int startMonth, int startDay,int endYear, int endMonth, int endDay)
+{
+    // 年份差转为月份差 + 月份差
+    int totalMonths = (endYear - startYear) * 12 + (endMonth - startMonth);
+
+    // 根据日期判断是否减去一个月
+    if (endDay < startDay)
+    {
+        totalMonths -= 1;
+    }
+
+    return totalMonths;
+}
+
+// 应补发工资
+void backPay(techBook *abs)
+{
+    int startYear, startMonth, startDay;
+    int endYear, endMonth, endDay;
+    double lastSalaryTemp[MAX];
+    double backPayTemp[MAX];
+
+    cout << "请输入起始日期 (格式: 年 月 日): ";
+    cin >> startYear >> startMonth >> startDay;
+
+    cout << "请输入结束日期 (格式: 年 月 日): ";
+    cin >> endYear >> endMonth >> endDay;
+
+    // 调用工作时长月份计算函数计算月份
+    int months = calculateMonthDifference(startYear, startMonth, startDay, endYear, endMonth, endDay);
+
+    showInfo(abs);
+
+    for (int i = 0; i < abs->m_Size; i++)
+    {
+        lastSalaryTemp[i] = abs->personArray[i].lastsalary;
+    }
+    adjustSalary(abs); // 重新计算调整后工资
+
+    for (int i = 0; i < abs->m_Size; i++)
+    {
+        backPayTemp[i] = abs->personArray[i].lastsalary - lastSalaryTemp[i];
+    }
+
+    // 输出结果
+    cout << "补发工资: " << endl;
+    cout << "工号\t" << "姓名\t" << "补发工资\t" << endl;
+    for (int i = 0; i < abs->m_Size; i++)
+    {
+        cout << abs->personArray[i].num << "\t"
+             << abs->personArray[i].name << "\t"
+             << backPayTemp[i] * months << endl;
+    }
+}
+
 void adjustSalaryMenu(techBook *abs)
 {
     int select;
-    cout << "-----------------------------------------" << endl;
-    cout << "1 工资调整" << endl;
-    cout << "2 查询指定职工的工资" << endl;
-    cout << "3 应补发工资" << endl;
-    cout << "0 退出" << endl;
-    cout << "-----------------------------------------" << endl;
-    cin >> select;
-    switch (select)
+    while (select != 0)
     {
-    case 1:
-        adjustSalary(abs);
-        showInfo(abs);
-    default:
-        break;
+        cout << "-----------------------------------------" << endl;
+        cout << "1 工资调整" << endl;
+        cout << "2 查询指定职工的工资" << endl;
+        cout << "3 应补发工资" << endl;
+        cout << "0 退出" << endl;
+        cout << "-----------------------------------------" << endl;
+        cin >> select;
+        switch (select)
+        {
+        case 1:
+            adjustSalary(abs);
+            showInfo(abs);
+            break;
+        case 2:
+            searchSalary(abs);
+            break;
+        case 3:
+            backPay(abs);
+            break;
+        case 0:
+            break;
+        }
     }
 }
 
