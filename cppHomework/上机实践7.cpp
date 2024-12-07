@@ -377,6 +377,7 @@ void backPay(techBook *abs)
     }
 }
 
+//调整薪资菜单
 void adjustSalaryMenu(techBook *abs)
 {
     int select;
