@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cstdlib>
+#include <fstream>
 #include <iostream>
 #include <string>
 
@@ -23,6 +24,62 @@ struct techBook
     int m_Size; // 记录表中人数
 };
 
+// 保存数据到 source.txt
+void saveToFile(techBook *abs, const string &filename)
+{
+    ofstream outFile(filename, ios::out); // 打开文件输出模式
+    if (!outFile)
+    {
+        cerr << "无法打开文件进行写入！" << endl;
+        return;
+    }
+
+    // 写入所有员工数据
+    outFile << abs->m_Size << endl; // 写入当前记录数
+    for (int i = 0; i < abs->m_Size; i++)
+    {
+        outFile << abs->personArray[i].num << " "
+                << abs->personArray[i].name << " "
+                << abs->personArray[i].title << " "
+                << abs->personArray[i].workage << " ";
+        for (int j = 0; j < 15; j++)
+        {
+            outFile << abs->personArray[i].dSalary[j] << " ";
+        }
+        outFile << abs->personArray[i].dTax << " "
+                << abs->personArray[i].lastsalary << endl;
+    }
+
+    outFile.close();
+    cout << "数据已成功保存到 " << filename << " 文件中。" << endl;
+}
+
+// 加载source.txt中的文件
+void loadFromFile(techBook *abs, const string &filename)
+{
+    ifstream inFile(filename, ios::in); // 打开文件用于读取
+    if (!inFile)
+    {
+        cerr << "文件不存在，或无法打开！程序将从空数据开始运行。" << endl;
+        abs->m_Size = 0; // 如果文件不存在，初始化为空
+        return;
+    }
+
+    // 读取员工数据
+    inFile >> abs->m_Size; // 读取当前记录数
+    for (int i = 0; i < abs->m_Size; i++)
+    {
+        inFile >> abs->personArray[i].num >> abs->personArray[i].name >> abs->personArray[i].title >> abs->personArray[i].workage;
+        for (int j = 0; j < 15; j++)
+        {
+            inFile >> abs->personArray[i].dSalary[j];
+        }
+        inFile >> abs->personArray[i].dTax >> abs->personArray[i].lastsalary;
+    }
+
+    inFile.close();
+    cout << "数据已成功从 " << filename << " 文件中加载。" << endl;
+}
 // 计算个调税
 double taxCount(double month_income)
 {
@@ -126,6 +183,7 @@ void setInfo(techBook *abs)
 
         // 录入完成，m_Size 自增，指向下一个空位置
         abs->m_Size++;
+        saveToFile(abs, "source.txt");
         system("clear");
     }
 
@@ -191,9 +249,7 @@ void maxMinAvg(techBook *abs)
             countBelowAvg++;
         }
     }
-
     // 打印最大值、最小值及对应职工信息
-
     cout << "最大工资职工信息: 工号 = " << abs->personArray[maxIndex].num
 
          << ", 姓名 = " << abs->personArray[maxIndex].name
@@ -336,13 +392,14 @@ void adjustSalary(techBook *abs)
 
         calculateTaxLastsalary(&abs->personArray[i]); // 重新计算个调税和实发工资
     }
+    saveToFile(abs, "source.txt");
 }
 
 // 删除工资记录
 void deleteSalaryInfo(techBook *abs)
 {
     string num;
-    int index;
+    int index = -1;
     cout << "请输入要删除的员工工号：";
     cin >> num;
     for (int i = 0; i < abs->m_Size; i++)
@@ -352,10 +409,17 @@ void deleteSalaryInfo(techBook *abs)
             index = i;
         }
     }
+    // 检查是否找到员工记录
+    if (index == -1)
+    {
+        cout << "未找到工号为 " << num << " 的员工信息，删除失败！" << endl;
+        return;
+    }
     for (int j = index; j < abs->m_Size - 1; j++)
     {
         abs->personArray[j] = abs->personArray[j + 1];
     }
+    saveToFile(abs, "source.txt");
     cout << "删除成功" << endl;
 }
 
@@ -415,12 +479,20 @@ void editSalary(techBook *abs)
             cout << "已找到该员工" << endl;
         }
     }
+    // 检查是否找到员工记录
+    if (index == -1)
+    {
+        cout << "未找到工号为 " << num << " 的员工信息，删除失败！" << endl;
+        return;
+    }
     cout << "请重新输入15项工资(空格隔开):";
     for (int j = 0; j < abs->m_Size; j++)
     {
         cin >> abs->personArray[index].dSalary[j];
     }
     cout << "修改成功" << endl;
+
+    saveToFile(abs, "source.txt");
 }
 
 // 根据实发工资排序
@@ -438,18 +510,110 @@ void lastSalarySort(techBook *abs)
             }
         }
     }
+    saveToFile(abs, "source.txt");
     showInfo(abs);
 }
 
 // 插入工资信息
 void insertSalary(techBook *abs)
 {
+    // 判断表内是否已满
+    if (abs->m_Size >= MAX)
+    {
+        cout << "无法插入，员工数量已达到最大值！" << endl;
+        return;
+    }
+
+    string num;
+    int index = -1; // 基准位置员工工号
+    cout << "请输入插入位置后一个人的工号(如末尾插入则输入1): ";
+    cin >> num;
+
+    // 末尾插入
+    if (num == "1")
+    {
+        cout << "请输入职工工号: ";
+        cin >> abs->personArray[abs->m_Size].num;
+        cout << "请输入姓名: ";
+        cin >> abs->personArray[abs->m_Size].name;
+        cout << "请输入职称: ";
+        cin >> abs->personArray[abs->m_Size].title;
+        cout << "请输入工龄: ";
+        cin >> abs->personArray[abs->m_Size].workage;
+
+        cout << "请输入职工的15项工资明细: " << endl;
+        for (int j = 0; j < 15; j++)
+        {
+            cout << "请输入第" << j + 1 << "项: ";
+            cin >> abs->personArray[abs->m_Size].dSalary[j];
+        }
+
+        // 计算个调税和实发工资
+        calculateTaxLastsalary(&abs->personArray[abs->m_Size]);
+
+        // 录入完成，m_Size 自增，指向下一个空位置
+        abs->m_Size++;
+
+        // 保存到文件
+        saveToFile(abs, "source.txt");
+        return;
+    }
+
+    // 获取基准位置索引
+    for (int i = 0; i < abs->m_Size; i++)
+    {
+        if (num == abs->personArray[i].num)
+        {
+            index = i;
+            break;
+        }
+    }
+
+    // 如果工号不存在，返回错误提示
+    if (index == -1)
+    {
+        cout << "找不到指定的工号！插入失败。" << endl;
+        return;
+    }
+
+    // 从后依次将索引之后的向后移动一位，空出索引那一项数组
+    for (int i = abs->m_Size; i > index; i--)
+    {
+        abs->personArray[i] = abs->personArray[i - 1];
+    }
+
+    cout << "请输入职工工号: ";
+    cin >> abs->personArray[index].num;
+    cout << "请输入姓名: ";
+    cin >> abs->personArray[index].name;
+    cout << "请输入职称: ";
+    cin >> abs->personArray[index].title;
+    cout << "请输入工龄: ";
+    cin >> abs->personArray[index].workage;
+
+    cout << "请输入职工的15项工资明细: " << endl;
+    for (int j = 0; j < 15; j++)
+    {
+        cout << "请输入第" << j + 1 << "项: ";
+        cin >> abs->personArray[index].dSalary[j];
+    }
+
+    // 计算个调税和实发工资
+    calculateTaxLastsalary(&abs->personArray[index]);
+
+    // 录入完成，m_Size 自增，指向下一个空位置
+    abs->m_Size++;
+
+    // 保存到文件
+    saveToFile(abs, "source.txt");
 }
 
 int main()
 {
     techBook abs;
     abs.m_Size = 0;
+    // 从文件加载数据
+    loadFromFile(&abs, "source.txt");
     int quit = 1;
     while (quit != 0)
     {
@@ -470,8 +634,8 @@ int main()
             setInfo(&abs);
             cout << "按回车返回菜单" << endl;
             cin.get();
-            cin.get();
-            system("clear");
+            cin.get();       // 确保回车操作被捕获
+            system("clear"); // 清除(此处针对于macos系统，windows中clear替换成cls即可)
             break;
         case 2:
             deleteSalaryInfo(&abs);
@@ -495,6 +659,11 @@ int main()
             system("clear");
             break;
         case 5:
+            insertSalary(&abs);
+            cout << "按回车返回菜单" << endl;
+            cin.get();
+            cin.get();
+            system("clear");
             break;
         case 6:
             maxMinAvg(&abs);
@@ -526,6 +695,7 @@ int main()
             break;
         case 0:
             cout << "欢迎下次使用" << endl;
+            saveToFile(&abs, "source.txt"); // 保存数据到文件
             quit = 0;
             break;
         }
