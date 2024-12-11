@@ -322,7 +322,7 @@ void searchSalary(techBook *abs)
 }
 
 // 计算两个日期之间相差的月份数
-int calculateMonthDifference(int startYear, int startMonth, int startDay,int endYear, int endMonth, int endDay)
+int calculateMonthDifference(int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay)
 {
     // 年份差转为月份差 + 月份差
     int totalMonths = (endYear - startYear) * 12 + (endMonth - startMonth);
@@ -377,7 +377,7 @@ void backPay(techBook *abs)
     }
 }
 
-//调整薪资菜单
+// 调整薪资菜单
 void adjustSalaryMenu(techBook *abs)
 {
     int select;
