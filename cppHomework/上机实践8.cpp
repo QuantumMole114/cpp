@@ -80,6 +80,7 @@ void loadFromFile(techBook *abs, const string &filename)
     inFile.close();
     cout << "数据已成功从 " << filename << " 文件中加载。" << endl;
 }
+
 // 计算个调税
 double taxCount(double month_income)
 {
