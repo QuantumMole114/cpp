@@ -1,96 +1,79 @@
+#include <iomanip>
 #include <iostream>
 #include <string>
+
 using namespace std;
 
 int main()
 {
-    string topics[5] = {"Q1(1-10): ", "Q2(1-10): ", "Q3(1-10): ", "Q4(1-10): ", "Q5(1-10): "};
-    int responses[5][10];
-    for (int i = 0; i < 10; i++)
-    {
-        for (int j = 0; j < 5; j++)
-        {
-            cout << topics[j] << endl;
-            cin >> responses[i][j];
-        }
-    }
+    string topics[5] = {"Topic 1", "Topic 2", "Topic 3", "Topic 4", "Topic 5"};
+    int responses[5][10] = {0};         // 每个问题的评分记录，5行10列
+    int totalResponses[5] = {0};        // 每个问题的总分
+    double averageResponses[5] = {0.0}; // 每个问题的平均分
 
-    // 赋初始值
-    int responsesCount[5][12];
-    for (int i = 0; i < 5; i++)
+    // 数据输入
+    for (int user = 0; user < 10; user++)
     {
-        for (int j = 0; j < 12; j++)
+        cout << "User " << user + 1 << "，请对以下问题进行评分 (1-10):\n";
+        for (int question = 0; question < 5; question++)
         {
-            responsesCount[i][j] = 0;
-        }
-    }
+            cout << topics[question] << ": ";
+            int score;
+            cin >> score;
 
-    // 统计各得分
-    for (int i = 0; i < 5; i++)
-    {
-        for (int j = 0; j < 10; j++)
-        {
-            for (int k = 0; k < 10; k++)
+            // 检查评分有效性
+            while (score < 1 || score > 10)
             {
-                if (responses[i][j] == k + 1)
-                {
-                    responsesCount[i][k]++;
-                }
+                cout << "无效评分，请输入 1 到 10 的数字: ";
+                cin >> score;
             }
+
+            responses[question][score - 1]++;  // 累计该评分
+            totalResponses[question] += score; // 累计总分
         }
     }
 
-    // 计算总分和平均分
+    // 计算平均分
     for (int i = 0; i < 5; i++)
     {
-        for (int j = 0; j < 10; j++)
-        {
-            responsesCount[i][10] += responsesCount[i][j] * (j + 1); // 第11项存放总分
-            responsesCount[i][11] = responsesCount[i][10] / 10;      // 第12项存放平均分
-        }
+        averageResponses[i] = static_cast<double>(totalResponses[i]) / 10.0;
     }
 
-    // 打印表格
-    cout << "\t";
-    for (int i = 0; i < 10; i++)
+    // 输出表格
+    cout << "\n汇总统计结果:\n";
+    cout << setw(10) << "问题";
+    for (int score = 1; score <= 10; score++)
     {
-        cout << i + 1 << "\t";
+        cout << setw(6) << score;
     }
-    cout << "总分\t" << "平均分\t";
-    cout << "\n";
-
-    for (int i = 0; i < 5; i++)
-    {
-        for (int j = 0; j < 12; j++)
-        {
-            cout << "Q" << i + 1 << ": \t";
-            cout << responsesCount[i][j];
-        }
-    }
-    cout << endl;
-
-    // 找出最大最小值
-    int totalTemp[5];
-    for (int i = 0; i < 5; i++)
-    {
-        totalTemp[i] = responsesCount[i][10];
-    }
-
-    sort(totalTemp, totalTemp + 5);
-    int MAX = totalTemp[4];
-    int MIN = totalTemp[0];
+    cout << setw(8) << "总分" << setw(10) << "平均分\n";
 
     for (int i = 0; i < 5; i++)
     {
-        if (responsesCount[i][11] == MAX)
+        cout << setw(10) << topics[i];
+        for (int score = 0; score < 10; score++)
         {
-            cout << "总分最高的是Q" << i + 1 << endl;
+            cout << setw(6) << responses[i][score];
         }
-        if (responsesCount[i][11] == MIN)
+        cout << setw(8) << totalResponses[i] << setw(10) << fixed << setprecision(2) << averageResponses[i] << "\n";
+    }
+
+    // 找出总分最高和最低的问题
+    int maxIndex = 0, minIndex = 0;
+    for (int i = 1; i < 5; i++)
+    {
+        if (totalResponses[i] > totalResponses[maxIndex])
         {
-            cout << "总分最低的是Q" << i + 1 << endl;
+            maxIndex = i;
+        }
+        if (totalResponses[i] < totalResponses[minIndex])
+        {
+            minIndex = i;
         }
     }
+
+    cout << "\n总分最高的是: " << topics[maxIndex] << "，总分为 " << totalResponses[maxIndex] << "\n";
+    cout << "总分最低的是: " << topics[minIndex] << "，总分为 " << totalResponses[minIndex] << "\n";
 
     return 0;
 }
